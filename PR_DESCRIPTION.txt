@@ -1,0 +1,59 @@
+## Pull Request: Lightroom Classic External Editor Integration
+
+### Summary
+This PR adds Adobe Lightroom Classic integration to PyChrome, enabling it to work as an external editor for seamless IR photo conversion workflows.
+
+### Motivation
+Many IR photographers use Lightroom Classic for organizing their photos. This integration allows them to send photos directly from LR to PyChrome for IR conversion, then have the results automatically return to their LR catalog - similar to the Lightroom ↔ Photoshop workflow.
+
+### Changes
+
+**Core Python Changes (Cross-Platform):**
+- **CLI argument support**: PyChrome now accepts a file path argument and auto-loads it
+- **Save-in-place function**: New `save_and_return()` overwrites the source file instead of creating `_IRG` copies
+- **Conditional UI**: "Save & Return" button appears only when launched from external editor
+- **State tracking**: Added `external_editor_path` field to track when launched from LR
+
+**New Files:**
+- `lr_launcher.py` — Lightweight launcher script (cross-platform, compiled to .exe on Windows / .app on macOS)
+- `build_lr_launcher.bat` — Automated build script for Windows (convenience; macOS users can use existing installer.py)
+- `LIGHTROOM_INTEGRATION.md` — Complete end-user documentation for setup and usage
+- `.gitignore` — Prevents committing build artifacts
+
+**Modified Files:**
+- `Source Code/app.py` — Added `import sys`, `save_and_return()` function, CLI parsing
+- `Source Code/state.py` — Added `external_editor_path: str | None = None` field
+- `Source Code/ui.py` — Added "Save & Return" button (hidden by default)
+- `runPyChrome.bat` — Added `%*` to forward command-line arguments
+
+### Backward Compatibility
+✅ **Standalone PyChrome workflow completely unchanged**
+- No CLI args → "Save & Return" button hidden
+- Export still creates `_IRG` files
+- All existing functionality preserved
+
+### Testing
+- ✅ Windows 10/11 with Lightroom Classic
+- ✅ 16-bit TIFF round-trip preservation
+- ✅ Standalone mode unaffected
+- ✅ CLI argument auto-loading
+- ⚠️ macOS untested (should work - PyInstaller creates .app bundles)
+
+### Platform Support
+- **Windows:** Fully tested and working
+- **macOS:** Core Python changes work; .app launcher can be built with PyInstaller `--windowed`
+- **Linux:** CLI functionality works (LR Classic not available on Linux)
+
+### Usage Workflow
+1. Build launcher: `build_lr_launcher.bat` (Windows) or manual PyInstaller (macOS)
+2. Configure LR: Preferences → External Editing → Choose `PyChrome.exe` (or .app)
+3. Use: Photo → Edit In → PyChrome → Adjust → Save & Return
+4. Result appears in LR catalog, stacked with original
+
+### Documentation
+Complete setup and usage instructions in `LIGHTROOM_INTEGRATION.md`
+
+---
+
+**License:** MIT (same as original project)
+**Contribution by:** [Your GitHub Username]

@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# PyInstaller
+*.spec
+PyChrome.exe       # Windows launcher
+PyChrome.app/      # macOS launcher
+PyChrome           # Linux launcher
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Test files
+*.tif
+*.tiff
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*_IRG.*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Preset backups (keep presets/ folder structure)
+presets/*.json.backup

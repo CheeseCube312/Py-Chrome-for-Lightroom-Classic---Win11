@@ -70,6 +70,7 @@ class AppState:
     full_img: np.ndarray | None = None
     preview_img: np.ndarray | None = None
     wb_dropper_active: bool = False
+    external_editor_path: str | None = None
 
     scatter_theme_ids: dict[str, int | None] = field(
         default_factory=lambda: {"rg": None, "rb": None, "gb": None}

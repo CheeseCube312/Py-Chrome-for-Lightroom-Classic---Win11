@@ -62,6 +62,7 @@ def build_ui(callbacks):
                 with dpg.group(horizontal=True):
                     dpg.add_button(label="Open File...", callback=lambda: dpg.show_item("file_dialog"))
                     dpg.add_button(label="Save IRG Image", callback=callbacks["save_image"])
+                    dpg.add_button(label="Save & Return", tag="save_return_btn", callback=callbacks["save_and_return"], show=False)
                     dpg.add_combo(
                         items=[SAVE_FORMAT_JPEG, SAVE_FORMAT_PNG, SAVE_FORMAT_BMP],
                         label="Save format",

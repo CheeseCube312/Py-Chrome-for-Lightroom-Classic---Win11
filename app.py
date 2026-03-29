@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 
 import dearpygui.dearpygui as dpg
 import numpy as np
@@ -588,12 +589,32 @@ def save_image(sender=None, app_data=None):
             pass
 
 
+def save_and_return(sender=None, app_data=None):
+    if STATE.full_img is None or not STATE.external_editor_path:
+        print("No image or external editor path.")
+        return
+
+    path = STATE.external_editor_path
+    format_label = SAVE_FORMAT_TIFF if is_tiff_path(path) else SAVE_FORMAT_JPEG
+
+    temp = dpg.get_value("wb_temp")
+    tint = dpg.get_value("wb_tint")
+    wb_full = apply_white_balance(STATE.full_img, temp, tint)
+    out = scientific_irg_transform(wb_full)
+
+    saved = save_output_array(out, path, format_label)
+    if saved:
+        print("Saved in place:", path)
+        dpg.stop_dearpygui()
+
+
 def main():
     dpg.create_context()
 
     callbacks = {
         "open_file_callback": open_file_callback,
         "save_image": save_image,
+        "save_and_return": save_and_return,
         "save_preset_to_folder": save_preset_to_folder,
         "load_preset_from_folder": load_preset_from_folder,
         "show_delete_preset_confirm": show_delete_preset_confirm,
@@ -629,6 +650,13 @@ def main():
     dpg.set_value("hist_texture", _as_texture_value(empty_hist))
 
     dpg.show_viewport()
+
+    # If launched with a file path argument (e.g. from Lightroom), auto-load it
+    if len(sys.argv) > 1 and os.path.isfile(sys.argv[1]):
+        STATE.external_editor_path = sys.argv[1]
+        load_image_from_path(sys.argv[1])
+        dpg.show_item("save_return_btn")
+
     dpg.start_dearpygui()
     dpg.destroy_context()
 

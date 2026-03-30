@@ -24,7 +24,7 @@ Installation + Build (MacOS)
 Disclaimer: Untested, Experimental. Do not have a MacOS devcice to test with.
 1. Install Python (https://www.python.org/downloads/)
 2. Download [PyChrome.For.Lightroom.MacOS.zip](https://github.com/CheeseCube312/Py-Chrome-for-Lightroom-Classic---Win11/releases/download/Py-Chrome-LR-MacOSv0.1/PyChrome.for.Lightroom.MacOS.zip) and extract the zip into a folder.
-3. Run build_macos.sh 
+3. Run build_macos.sh to create the .app file
 4. Add as external editing program in Lightroom
 
 Adding External Editing Programs in Lightroom:
